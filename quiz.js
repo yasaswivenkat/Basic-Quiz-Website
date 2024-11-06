@@ -1,91 +1,85 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
+const questions = [
+    {
+        question: "What is the capital of France?",
+        options: ["Berlin", "London", "Paris", "Madrid"],
+        answer: 2
+    },
+    {
+        question: "What is 2 + 2?",
+        options: ["3", "4", "5", "6"],
+        answer: 1
+    },
+    {
+        question: "Which planet is known as the Red Planet?",
+        options: ["Earth", "Venus", "Mars", "Jupiter"],
+        answer: 2
+    },
+    {
+        question: "Who wrote 'Romeo and Juliet'?",
+        options: ["Shakespeare", "Tolstoy", "Hemingway", "Twain"],
+        answer: 0
+    },
+    {
+        question: "What is the boiling point of water?",
+        options: ["50°C", "75°C", "100°C", "125°C"],
+        answer: 2
+    }
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+const questionEl = document.getElementById("question");
+const optionButtons = document.querySelectorAll(".option");
+const nextButton = document.getElementById("next-button");
+const progressText = document.getElementById("progress");
+const resultText = document.getElementById("result");
+const scoreText = document.getElementById("score");
+const totalQuestionsText = document.getElementById("total-questions");
+const currentQuestionText = document.getElementById("current-question");
+
+totalQuestionsText.textContent = questions.length;
+
+function loadQuestion() {
+    const question = questions[currentQuestion];
+    questionEl.textContent = question.question;
+    optionButtons.forEach((button, index) => {
+        button.textContent = question.options[index];
+        button.classList.remove("selected");
+    });
+    currentQuestionText.textContent = currentQuestion + 1;
 }
 
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: linear-gradient(135deg, #74ebd5, #9face6);
-    color: #333;
+function selectOption(index) {
+    optionButtons.forEach(button => button.classList.remove("selected"));
+    optionButtons[index].classList.add("selected");
+    optionButtons[index].dataset.selected = true;
 }
 
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+function nextQuestion() {
+    const selectedOption = [...optionButtons].find(button => button.classList.contains("selected"));
+    if (selectedOption) {
+        const answerIndex = questions[currentQuestion].answer;
+        if (selectedOption.textContent === questions[currentQuestion].options[answerIndex]) {
+            score++;
+        }
+        currentQuestion++;
+        if (currentQuestion < questions.length) {
+            loadQuestion();
+        } else {
+            showResult();
+        }
+    } else {
+        alert("Please select an option before proceeding.");
+    }
 }
 
-.quiz-box {
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    width: 80%;
-    max-width: 500px;
-    padding: 20px;
-    text-align: center;
+function showResult() {
+    questionEl.classList.add("hidden");
+    optionButtons.forEach(button => button.classList.add("hidden"));
+    nextButton.classList.add("hidden");
+    resultText.classList.remove("hidden");
+    scoreText.textContent = score;
 }
 
-h1 {
-    font-size: 1.8em;
-    margin-bottom: 20px;
-}
-
-#question {
-    font-size: 1.2em;
-    margin-bottom: 20px;
-}
-
-#options {
-    display: flex;
-    flex-direction: column;
-}
-
-.option {
-    background-color: #f3f4f6;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 5px 0;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.option:hover {
-    background-color: #e0f7fa;
-    border-color: #00796b;
-}
-
-#next-button {
-    background-color: #00796b;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-}
-
-#next-button:hover {
-    background-color: #004d40;
-}
-
-.hidden {
-    display: none;
-}
-
-#result {
-    font-size: 1.2em;
-    margin-top: 20px;
-}
-
-#progress {
-    margin-top: 15px;
-    font-size: 0.9em;
-    color: #666;
-}
+loadQuestion();
