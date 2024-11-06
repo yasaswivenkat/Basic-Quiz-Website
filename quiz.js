@@ -1,85 +1,49 @@
+// JavaScript for Quiz
 const questions = [
-    {
-        question: "What is the capital of France?",
-        options: ["Berlin", "London", "Paris", "Madrid"],
-        answer: 2
-    },
-    {
-        question: "What is 2 + 2?",
-        options: ["3", "4", "5", "6"],
-        answer: 1
-    },
-    {
-        question: "Which planet is known as the Red Planet?",
-        options: ["Earth", "Venus", "Mars", "Jupiter"],
-        answer: 2
-    },
-    {
-        question: "Who wrote 'Romeo and Juliet'?",
-        options: ["Shakespeare", "Tolstoy", "Hemingway", "Twain"],
-        answer: 0
-    },
-    {
-        question: "What is the boiling point of water?",
-        options: ["50°C", "75°C", "100°C", "125°C"],
-        answer: 2
-    }
+    { question: "What is the capital of France?", options: ["Paris", "London", "Berlin", "Madrid"], answer: 0 },
+    { question: "What is the largest planet?", options: ["Mars", "Earth", "Jupiter", "Saturn"], answer: 2 },
+    { question: "What is the atomic number of oxygen?", options: ["6", "8", "7", "9"], answer: 1 },
+    { question: "Who wrote '1984'?", options: ["George Orwell", "J.K. Rowling", "Ernest Hemingway", "Jane Austen"], answer: 0 },
+    { question: "Which element has the chemical symbol 'Fe'?", options: ["Iron", "Gold", "Fluorine", "Lead"], answer: 0 }
 ];
 
 let currentQuestion = 0;
-let score = 0;
 
-const questionEl = document.getElementById("question");
-const optionButtons = document.querySelectorAll(".option");
-const nextButton = document.getElementById("next-button");
-const progressText = document.getElementById("progress");
-const resultText = document.getElementById("result");
-const scoreText = document.getElementById("score");
-const totalQuestionsText = document.getElementById("total-questions");
-const currentQuestionText = document.getElementById("current-question");
-
-totalQuestionsText.textContent = questions.length;
+const questionElement = document.getElementById('question');
+const optionsElements = [
+    document.getElementById('option1Label'),
+    document.getElementById('option2Label'),
+    document.getElementById('option3Label'),
+    document.getElementById('option4Label')
+];
+const nextButton = document.getElementById('nextButton');
+const questionCountElement = document.getElementById('questionCount');
 
 function loadQuestion() {
     const question = questions[currentQuestion];
-    questionEl.textContent = question.question;
-    optionButtons.forEach((button, index) => {
-        button.textContent = question.options[index];
-        button.classList.remove("selected");
+    questionElement.textContent = question.question;
+    optionsElements.forEach((optionElement, index) => {
+        optionElement.textContent = question.options[index];
+        document.getElementById(`option${index + 1}`).checked = false;
     });
-    currentQuestionText.textContent = currentQuestion + 1;
+    questionCountElement.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
 }
 
-function selectOption(index) {
-    optionButtons.forEach(button => button.classList.remove("selected"));
-    optionButtons[index].classList.add("selected");
-    optionButtons[index].dataset.selected = true;
-}
-
-function nextQuestion() {
-    const selectedOption = [...optionButtons].find(button => button.classList.contains("selected"));
-    if (selectedOption) {
-        const answerIndex = questions[currentQuestion].answer;
-        if (selectedOption.textContent === questions[currentQuestion].options[answerIndex]) {
-            score++;
-        }
-        currentQuestion++;
-        if (currentQuestion < questions.length) {
-            loadQuestion();
-        } else {
-            showResult();
-        }
-    } else {
-        alert("Please select an option before proceeding.");
+nextButton.addEventListener('click', () => {
+    const selectedOption = document.querySelector('input[name="option"]:checked');
+    if (!selectedOption) {
+        alert("Please select an answer!");
+        return;
     }
-}
 
-function showResult() {
-    questionEl.classList.add("hidden");
-    optionButtons.forEach(button => button.classList.add("hidden"));
-    nextButton.classList.add("hidden");
-    resultText.classList.remove("hidden");
-    scoreText.textContent = score;
-}
+    currentQuestion++;
+    if (currentQuestion < questions.length) {
+        loadQuestion();
+    } else {
+        alert("Quiz completed!");
+        currentQuestion = 0; // Reset for demonstration; remove if not needed
+        loadQuestion(); // Load first question if repeating
+    }
+});
 
 loadQuestion();
