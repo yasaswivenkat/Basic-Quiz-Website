@@ -3,17 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Page</title>
+    <title>Quiz Website</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="quiz-container">
-        <h2 id="question">Question will appear here</h2>
-        <div id="answers">
-            <!-- Options will be generated here dynamically -->
+    <div class="container">
+        <div class="quiz-box">
+            <h1>General Knowledge Quiz</h1>
+            <div id="question-box">
+                <p id="question"></p>
+                <div id="options">
+                    <button class="option" onclick="selectOption(0)"></button>
+                    <button class="option" onclick="selectOption(1)"></button>
+                    <button class="option" onclick="selectOption(2)"></button>
+                    <button class="option" onclick="selectOption(3)"></button>
+                </div>
+                <p id="progress">Question <span id="current-question">1</span> of <span id="total-questions">5</span></p>
+            </div>
+            <button id="next-button" onclick="nextQuestion()">Next</button>
+            <p id="result" class="hidden">Your score: <span id="score">0</span></p>
         </div>
-        <button onclick="nextQuestion()">Next</button>
     </div>
-    <script src="quiz.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
