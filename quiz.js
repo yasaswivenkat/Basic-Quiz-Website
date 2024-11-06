@@ -1,49 +1,91 @@
-const questions = [
-    {
-        question: "What is 2 + 2?",
-        answers: ["3", "4", "5", "6"],
-        correctAnswer: 1 // index of the correct answer in the answers array
-    },
-    {
-        question: "What is the capital of France?",
-        answers: ["London", "Berlin", "Paris", "Rome"],
-        correctAnswer: 2
-    }
-    // Add more questions as needed
-];
-
-let currentQuestion = 0;
-let score = 0;
-
-function loadQuestion() {
-    const questionElement = document.getElementById("question");
-    const answersElement = document.getElementById("answers");
-
-    questionElement.innerText = questions[currentQuestion].question;
-    answersElement.innerHTML = '';
-
-    questions[currentQuestion].answers.forEach((answer, index) => {
-        const button = document.createElement("button");
-        button.innerText = answer;
-        button.onclick = () => selectAnswer(index);
-        answersElement.appendChild(button);
-    });
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
 }
 
-function selectAnswer(index) {
-    if (index === questions[currentQuestion].correctAnswer) {
-        score++;
-    }
-    if (currentQuestion < questions.length - 1) {
-        currentQuestion++;
-        loadQuestion();
-    } else {
-        showResults();
-    }
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #74ebd5, #9face6);
+    color: #333;
 }
 
-function showResults() {
-    document.querySelector(".quiz-container").innerHTML = `<h2>Your score: ${score} out of ${questions.length}</h2>`;
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-loadQuestion();
+.quiz-box {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    width: 80%;
+    max-width: 500px;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+#question {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+#options {
+    display: flex;
+    flex-direction: column;
+}
+
+.option {
+    background-color: #f3f4f6;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px 0;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.option:hover {
+    background-color: #e0f7fa;
+    border-color: #00796b;
+}
+
+#next-button {
+    background-color: #00796b;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+#next-button:hover {
+    background-color: #004d40;
+}
+
+.hidden {
+    display: none;
+}
+
+#result {
+    font-size: 1.2em;
+    margin-top: 20px;
+}
+
+#progress {
+    margin-top: 15px;
+    font-size: 0.9em;
+    color: #666;
+}
